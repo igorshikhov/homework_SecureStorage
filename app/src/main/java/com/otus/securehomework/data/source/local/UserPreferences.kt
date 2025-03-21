@@ -7,28 +7,30 @@ import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
+import com.otus.securehomework.crypto.CryptoManager
 
 private const val dataStoreFile: String = "securePref"
 
 class UserPreferences
 @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val cryptoManager : CryptoManager
 ) {
 
     val accessToken: Flow<String?>
         get() = context.dataStore.data.map { preferences ->
-            preferences[ACCESS_TOKEN]
+            preferences[ACCESS_TOKEN]?.let { cryptoManager.decrypt(it) }
         }
 
     val refreshToken: Flow<String?>
         get() = context.dataStore.data.map { preferences ->
-            preferences[REFRESH_TOKEN]
+            preferences[REFRESH_TOKEN]?.let { cryptoManager.decrypt(it) }
         }
 
     suspend fun saveAccessTokens(accessToken: String?, refreshToken: String?) {
         context.dataStore.edit { preferences ->
-            accessToken?.let { preferences[ACCESS_TOKEN] = it }
-            refreshToken?.let { preferences[REFRESH_TOKEN] = it }
+            accessToken?.let { preferences[ACCESS_TOKEN] = cryptoManager.encrypt(it) }
+            refreshToken?.let { preferences[REFRESH_TOKEN] = cryptoManager.encrypt(it) }
         }
     }
 

@@ -10,12 +10,29 @@
         android:id="@+id/loginFragment"
         android:label="fragment_register"
         android:name="com.otus.securehomework.presentation.auth.LoginFragment"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_biometricFragment"
+            app:destination="@id/biometricFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registrationFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/registrationFragment"
         android:label="fragment_register"
         android:name="com.otus.securehomework.presentation.auth.RegisterFragment"
         tools:layout="@layout/fragment_register" />
+
+    <fragment
+        android:id="@+id/biometricFragment"
+        android:label="fragment_register"
+        android:name="com.otus.securehomework.presentation.auth.BiometricFragment"
+        tools:layout="@layout/fragment_biomeric" >
+        <action
+            android:id="@+id/action_biometricFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 
 </navigation>
